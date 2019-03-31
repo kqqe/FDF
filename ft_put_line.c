@@ -19,7 +19,8 @@ static void	line_by_x(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 	int		d;
 	int		len;
 	int		*addr;
-	int 	i;
+	int 	g = 2;
+	int 	size_window_picture = 500;
 
 	len = MAX(line.len_x, line.len_y) + 1;
 	x = line.p0.x;
@@ -28,7 +29,7 @@ static void	line_by_x(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 	while (len--)
 	{
 		addr = (int*)s;
-		addr[(x + y * 500) - 1] = colour;
+		addr[(x + (y * size_window_picture)) - 1] = colour;
 		x += line.dx;
 		d += 2 * line.len_y;
 		if (d > 0)
@@ -47,6 +48,8 @@ static void	line_by_y(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 	int		d;
 	int		len;
 	int		*addr;
+	int 	g = 2; // временная переменная для тестов
+	int 	size_window_picture = 500;
 
 	len = MAX(line.len_x, line.len_y) + 1;
 	x = line.p0.x;
@@ -55,7 +58,7 @@ static void	line_by_y(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 	while (len--)
 	{	
 		addr = (int*)s;
-		addr[(x + y * 500) - 1] = colour;
+		addr[(x + (y * size_window_picture)) - 1] = colour;// приводить к double онли тут 
 		y += line.dy;
 		d += 2 * line.len_x;
 		if (d > 0)

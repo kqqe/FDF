@@ -15,7 +15,6 @@
 int	main(int ac, char **av)
 {
 	int		**mtx;
-	int		i;
 
 	if (ac != 2)
 		ft_error_output(USAGE);

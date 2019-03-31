@@ -56,8 +56,8 @@ int		**ft_read_mtx(char *filename)
 		ft_free_tab(&tmp);
 		free(line);
 		//ft_create_point(mtx, line_count, len);
-		ft_graphics(mtx, line_count, len);
 	}
+	ft_graphics(mtx, line_count, len);
 	for(i = 0; i < line_count; i++)
 	{
 		for(int j = 0; j < len; j++)
