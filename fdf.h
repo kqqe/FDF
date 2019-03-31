@@ -16,6 +16,7 @@
 # define ABS(a) (a >= 0) ? a : -a
 # define MIN(a, b) a < b ? a : b
 # define MAX(a, b) a > b ? a : b
+# define WINDOW = 500;
 # include "mlx.h"
 
 # include "libft.h"
@@ -38,9 +39,10 @@ typedef struct s_img
 
 typedef struct  s_point
 {
-    int     x;
-    int     y;
-    int     z;
+    double     x;
+    double     y;
+    double     z;
+    double     angle;
 }               t_point;
 
 typedef struct  s_line
@@ -60,14 +62,17 @@ typedef struct		s_map
 
 
 //Creating functions
-t_point         ft_create_point(int **mtx, int line_count, int len);
-t_line          ft_create_line(t_point p1, t_point p2);
+t_point         *ft_create_point(int, int, int);
+t_line          ft_create_line(t_point *p1, t_point *p2);
 //General functions
 int		**ft_read_mtx(char *filename);
 void	ft_graphics(int **mtx, int line_count, int len);
+void 	control(int press_key, t_point *f);
 //Draw functions
 void			ft_put_line(void *mlx_p, void *win_p, t_line line, int colour, char *s);
 
 void			ft_error_output(char *err_str);
+//system function
+int	close_window(void *param);
 
 #endif
