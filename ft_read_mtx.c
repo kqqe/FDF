@@ -49,7 +49,7 @@ int		**ft_read_mtx(char *filename)
 		j = 0;
 		while (j < len)
 		{
-			mtx[i][j] = ft_atoi(tmp[j]);
+			mtx[i][j] = ft_atoi(tmp[j]);// написать атои базе
 			j++;
 		}
 		i++;

@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-t_point *ft_create_point(int x, int y, int z)
+t_point *ft_create_point(double x, double y, double z)
 {
     t_point *point;
 
@@ -20,6 +20,7 @@ t_point *ft_create_point(int x, int y, int z)
     point->x = x;
     point->y = y;
     point->z = z;
+    point->angle = 0;
 
     return (point);
 }
@@ -30,10 +31,11 @@ t_line  ft_create_line(t_point *p1, t_point *p2)
 
     line.p0 = *p1;
     line.p1 = *p2;
-    line.len_x = abs(line.p0.x - line.p1.x);
-    line.len_y = abs(line.p0.y - line.p1.y);
+    line.len_x = fabs(line.p0.x - line.p1.x);
+    line.len_y = fabs(line.p0.y - line.p1.y);
     line.dx = (line.p1.x - line.p0.x) >= 0 ? 1 : -1;
     line.dy = (line.p1.y - line.p0.y) >= 0 ? 1 : -1;
     return (line);
 }
+
 

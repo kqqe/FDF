@@ -20,3 +20,9 @@ void	ft_error_output(char *err_str)
 	write(2, err_str, len);
 	exit(1);
 }
+
+int		close_window(void *param)
+{
+	exit(-2);
+	return (0);
+}
