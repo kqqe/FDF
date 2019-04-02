@@ -12,57 +12,58 @@
 
 #include "fdf.h"
 
-void	ft_graphics(int **mtx, int line_count, int len)//, int offset)
+void	ft_graphics(int **mtx, int line_count, int len, t_pmtx *pmtx)//, int offset)
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
-	t_line	linex, liney;
+
 	t_img	*img;
-	char	*s;
 	int		*addr;
 	int 	offset = 85;
-	double		scope = 20;
 
-
-	mlx_ptr = mlx_init();
 	if ((img = malloc(sizeof(t_img))) == NULL)
 		exit(0);
-	img->img = mlx_new_image(mlx_ptr, 500, 500);// картинки в окне
-	win_ptr = mlx_new_window(mlx_ptr, 1000, 1000, "fdF"); //ширина, длина окна
-	s = mlx_get_data_addr(img->img, &img->bts, &img->size_line, &img->endian);
-	double i = 0;
-	double j = 0;
-	img->connect = ft_create_point(0,0,0);
+	img->mlx_ptr = mlx_init();	
+	img->img = mlx_new_image(img->mlx_ptr, 500, 500);// картинки в окне
+	img->win_ptr = mlx_new_window(img->mlx_ptr, 500, 500, "fdF"); //ширина, длина окна
+	img->addr = mlx_get_data_addr(img->img, &img->bts, &img->size_line, &img->endian);
+	draw_map(line_count, len,pmtx, img);
+	char *string = "FDF by Pben"; 
+	mlx_string_put (img->mlx_ptr, img->win_ptr, 1, 1, 0x0000ff00, string);
+	mlx_hook (img->win_ptr, 17, 0, close_window, (void*)0);	
+	mlx_hook(img->win_ptr, 2, 0, control, (void*)(img->connect));
+	mlx_loop(img->mlx_ptr);
+}
+
+void	draw_map(int line_count, int len, t_pmtx *mtx, t_img *img)
+{ 
+	int 		i;
+	int			j;
+	t_line		linex;
+	t_line		liney;
+
+	i = 0;
 	while (i < line_count )
 	{
 		j = 0;
 		while (j < len)
 		{
 			if (j < len - 1)
-			{
-				linex = ft_create_line(ft_create_point((j + 1)  * scope, (i + 1) * scope, mtx[(int)i][(int)j]),
-								ft_create_point((j + 2) * scope, (i + 1) * scope, mtx[(int)i][(int)j + 1])); 
-				ft_put_line(mlx_ptr, win_ptr, linex, 0x0000ff00, s);
-				
+			{	
+				linex = ft_create_line(ft_create_point((j + 1) * mtx->scope, (i + 1) * mtx->scope, mtx->mtx[i][j]->z),
+								ft_create_point((j + 2) * mtx->scope, (i + 1) * mtx->scope, mtx->mtx[i][j + 1]->z));
+				 ft_put_line(img->mlx_ptr, img->win_ptr, linex, 0x0000ff00, img->addr);	
 			}
 			if (i < line_count - 1)
 			{
-				liney = ft_create_line(ft_create_point((j + 1) * scope, (i + 1) * scope, mtx[(int)i][(int)j]),
-								ft_create_point((j + 1)  * scope, (i + 2) * scope, mtx[(int)i + 1][(int)j]));	
-				ft_put_line(mlx_ptr, win_ptr, liney, 0x0000ff00, s);
+				liney = ft_create_line(ft_create_point((j + 1) * mtx->scope, (i + 1) * mtx->scope, mtx->mtx[i][j]->z),
+								ft_create_point((j + 1)  * mtx->scope, (i + 2) * mtx->scope, 0));	
+				ft_put_line(img->mlx_ptr, img->win_ptr, liney, 0x0000ff00, img->addr);
 				
 			}		
-			mlx_put_image_to_window(mlx_ptr, win_ptr, img->img,	offset, offset);// c какого пикселя вставлять в окно
+			mlx_put_image_to_window(img->mlx_ptr, img->win_ptr, img->img, 50, 50);// c какого пикселя вставлять в окно
 			j++;	
 		}
 		i++;
 	}
-	char *string = "FDF by Pben"; 
-	mlx_string_put (mlx_ptr, win_ptr, 600, 20, 0x0000ff00, string);
-	mlx_hook (win_ptr, 17, 0, close_window, (void*)0);
-	
-	mlx_hook(win_ptr, 2, 0, control, (void*)(img->connect));
-	mlx_loop(mlx_ptr);
 }
 
 // void	move_map(t_point f, int i, int j)

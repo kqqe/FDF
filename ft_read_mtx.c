@@ -55,15 +55,16 @@ int		**ft_read_mtx(char *filename)
 		i++;
 		ft_free_tab(&tmp);
 		free(line);
-		//ft_create_point(mtx, line_count, len);
 	}
-	ft_graphics(mtx, line_count, len);
-	for(i = 0; i < line_count; i++)
-	{
-		for(int j = 0; j < len; j++)
-			printf("%2d", mtx[i][j]);
-		printf("\n");
-	}
+	t_pmtx *pmtx = ft_init_pmtx(mtx, len, line_count);
+	ft_print_pmtx(pmtx);
+	ft_graphics(mtx, line_count, len, pmtx);
+	// for(i = 0; i < line_count; i++)
+	// {
+	// 	for(int j = 0; j < len; j++)
+	// 		printf("%3d", mtx[i][j]);
+	// 	printf("\n");
+	// }
 	close(fd);
 	return (mtx);
 }
