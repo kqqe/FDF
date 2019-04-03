@@ -36,17 +36,17 @@ typedef struct  s_point
 	double		z;
 	double		angle;
 }               t_point;
-
+// system variable
 typedef struct	s_img
 {
 	void		*img;
 	int			bts;
 	int			size_line;
 	int			endian;
-	t_point		*connect;
 	void		*win_ptr;
 	void		*mlx_ptr;
 	char		*addr;
+	int 		test;
 }             	t_img;
 
 typedef struct  s_line
@@ -66,6 +66,7 @@ typedef struct	s_pmtx
 	int			size_y;
 	double		scope;
 	double		angle;
+	int			color;
 	t_img		*img;
 }               t_pmtx;
 
@@ -85,8 +86,8 @@ void			ft_graphics(int **mtx, int line_count, int len, t_pmtx *pmtx);
 int				control(int press_key, void *param);
 //Draw functions
 void			ft_put_line(void *mlx_p, void *win_p, t_line line, int colour, char *s);
-void			draw_map(int line_count, int len, t_pmtx *mtx, t_img *img);
-
+void			draw_map(int line_count, int len, t_pmtx *mtx, int color);
+int				main_draw_function(int line_count, int len, t_pmtx *mtx, t_img *img);
 void			ft_error_output(char *err_str);
 //system function
 int				close_window(void *param);
