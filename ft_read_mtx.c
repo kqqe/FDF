@@ -57,7 +57,7 @@ int		**ft_read_mtx(char *filename)
 		free(line);
 	}
 	t_pmtx *pmtx = ft_init_pmtx(mtx, len, line_count);
-	ft_print_pmtx(pmtx);
+	//ft_print_pmtx(pmtx);
 	ft_graphics(mtx, line_count, len, pmtx);
 	// for(i = 0; i < line_count; i++)
 	// {

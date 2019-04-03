@@ -19,6 +19,5 @@ int	main(int ac, char **av)
 	if (ac != 2)
 		ft_error_output(USAGE);
 	mtx = ft_read_mtx(av[1]);
-	//ft_graphics(mtx);
 	return (0);
 }

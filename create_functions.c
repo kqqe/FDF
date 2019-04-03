@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffahey <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/03 18:44:30 by ffahey            #+#    #+#             */
-/*   Updated: 2019/03/03 18:44:47 by ffahey           ###   ########.fr       */
+/*   Created: 2019/03/03 18:44:30 by pben              #+#    #+#             */
+/*   Updated: 2019/03/03 18:44:47 by pben             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_point *ft_create_point(double x, double y, double z)
     point->y = y;
     point->z = z;
     point->angle = 0;
-
     return (point);
 }
 
@@ -38,4 +37,21 @@ t_line  ft_create_line(t_point *p1, t_point *p2)
     return (line);
 }
 
+t_pmtx *ft_create_pmtx(int size_x, int size_y)
+{
+    t_pmtx  *pmtx;
 
+    pmtx = (t_pmtx*)malloc(sizeof(t_pmtx));
+
+    pmtx->size_x = size_x;
+    pmtx->size_y = size_y;
+    pmtx->mtx = (t_point***)malloc(sizeof(t_point**) * size_y);
+    while(size_y--)
+    {
+        pmtx->mtx[size_y] = (t_point**)malloc(sizeof(t_point*) * size_x);
+    }
+    pmtx->angle = 0.0;
+    pmtx->scope = 0.0;
+
+    return (pmtx);
+}

@@ -22,18 +22,23 @@ void	ft_graphics(int **mtx, int line_count, int len, t_pmtx *pmtx)//, int offset
 	if ((img = malloc(sizeof(t_img))) == NULL)
 		exit(0);
 	img->mlx_ptr = mlx_init();	
-	img->img = mlx_new_image(img->mlx_ptr, 500, 500);// картинки в окне
-	img->win_ptr = mlx_new_window(img->mlx_ptr, 500, 500, "fdF"); //ширина, длина окна
-	img->addr = mlx_get_data_addr(img->img, &img->bts, &img->size_line, &img->endian);
-	draw_map(line_count, len,pmtx, img);
+	//img->img = mlx_new_image(img->mlx_ptr, 1500, 1500);// картинки в окне
+	img->win_ptr = mlx_new_window(img->mlx_ptr, 2000, 2000, "fdF"); //ширина, длина окна
+	//img->addr = mlx_get_data_addr(img->img, &img->bts, &img->size_line, &img->endian);
+	
+	pmtx->img = img;
+
+	draw_map(line_count, len, pmtx, 0x0000ff00);
+	
 	char *string = "FDF by Pben"; 
 	mlx_string_put (img->mlx_ptr, img->win_ptr, 1, 1, 0x0000ff00, string);
+
 	mlx_hook (img->win_ptr, 17, 0, close_window, (void*)0);	
-	mlx_hook(img->win_ptr, 2, 0, control, (void*)(img->connect));
-	mlx_loop(img->mlx_ptr);
+	mlx_hook(img->win_ptr, 2, 0, control, (void*)(pmtx));
+	mlx_loop(img->mlx_ptr);	
 }
 
-void	draw_map(int line_count, int len, t_pmtx *mtx, t_img *img)
+void	draw_map(int line_count, int len, t_pmtx *mtx, int color)
 { 
 	int 		i;
 	int			j;
@@ -41,30 +46,36 @@ void	draw_map(int line_count, int len, t_pmtx *mtx, t_img *img)
 	t_line		liney;
 
 	i = 0;
-	while (i < line_count )
+	while (i < line_count)
 	{
 		j = 0;
 		while (j < len)
 		{
 			if (j < len - 1)
 			{	
-				linex = ft_create_line(ft_create_point((j + 1) * mtx->scope, (i + 1) * mtx->scope, mtx->mtx[i][j]->z),
-								ft_create_point((j + 2) * mtx->scope, (i + 1) * mtx->scope, mtx->mtx[i][j + 1]->z));
-				 ft_put_line(img->mlx_ptr, img->win_ptr, linex, 0x0000ff00, img->addr);	
+				linex = ft_create_line(mtx->mtx[i][j], mtx->mtx[i][j + 1]);
+				 ft_put_line(mtx->img->mlx_ptr, mtx->img->win_ptr, linex, color, mtx->img->addr);	
 			}
 			if (i < line_count - 1)
 			{
-				liney = ft_create_line(ft_create_point((j + 1) * mtx->scope, (i + 1) * mtx->scope, mtx->mtx[i][j]->z),
-								ft_create_point((j + 1)  * mtx->scope, (i + 2) * mtx->scope, 0));	
-				ft_put_line(img->mlx_ptr, img->win_ptr, liney, 0x0000ff00, img->addr);
-				
+				liney = ft_create_line(mtx->mtx[i][j], mtx->mtx[i + 1][j]);
+				ft_put_line(mtx->img->mlx_ptr, mtx->img->win_ptr, liney, color, mtx->img->addr);		
 			}		
-			mlx_put_image_to_window(img->mlx_ptr, img->win_ptr, img->img, 50, 50);// c какого пикселя вставлять в окно
+			//mlx_put_image_to_window(mtx->img->mlx_ptr, mtx->img->win_ptr, mtx->img->img, 50, 50);// c какого пикселя вставлять в окно
 			j++;	
 		}
 		i++;
 	}
 }
+
+// int		main_draw_function(int line_count, int len, t_pmtx *mtx, t_img *img)
+// {
+// 	while()
+// 	{
+// 		draw_map(line_count, len, mtx, img);
+// 	}
+// } 
+
 
 // void	move_map(t_point f, int i, int j)
 // {

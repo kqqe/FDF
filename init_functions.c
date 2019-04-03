@@ -20,7 +20,7 @@ t_pmtx    *ft_init_pmtx(int **mtx, int size_x, int size_y)
     t_point ***dest;
 
     pmtx = ft_create_pmtx(size_x, size_y);
-    pmtx->scope = 25;
+    pmtx->scope = 8;
     dest = pmtx->mtx;
     i = 0;
     while (i < pmtx->size_y)
