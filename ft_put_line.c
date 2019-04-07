@@ -19,10 +19,10 @@ static void	line_by_x(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 	double		d;
 	double		len;
 	int		*addr;
-	int 	size_window_picture = 1500;
+	int 	size_window_picture = WINDOW;
 
-	len = MAX(line.len_x, line.len_y) + 1;
-	x = line.p0.x;
+	len = (MAX(line.len_x, line.len_y) + 1);
+	x = line.p0.x ;
 	y = line.p0.y;
 	d = -line.len_x;
 	while (len--)
@@ -35,9 +35,8 @@ static void	line_by_x(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 			y += line.dy;
 		}
 		mlx_pixel_put(mlx_ptr, win_ptr, (int)x, (int)y, colour);
-		//printf("tuta-x %d A TUTA-Y%d\n", x, y);
-		// addr = (int*)s;
-		// addr[((int)(x + (y * size_window_picture))) - 1] = colour;
+		 //addr = (int*)s;
+		 //addr[((int)(x + (y * size_window_picture))) - 1] = colour;
 	}
 
 }
@@ -49,9 +48,9 @@ static void	line_by_y(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 	double		d;
 	double		len;
 	int		*addr;
-	int 	size_window_picture = 1500;
+	int 	size_window_picture = WINDOW;
 
-	len = MAX(line.len_x, line.len_y) + 1;
+	len = (MAX(line.len_x, line.len_y) + 1);
 	x = line.p0.x;
 	y = line.p0.y;
 	d = -line.len_y;
@@ -68,8 +67,8 @@ static void	line_by_y(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 
 		}
 		mlx_pixel_put(mlx_ptr, win_ptr, (int)x, (int)y, colour);
-		// addr = (int*)s;
-		// addr[((int)(x + (y * size_window_picture))) - 1] = colour;// приводить к double онли тут 
+		 //addr = (int*)s;
+		 //addr[((int)(x + (y * size_window_picture))) - 1] = colour;// приводить к int онли тут 
 	}
 }
 

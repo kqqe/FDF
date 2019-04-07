@@ -14,8 +14,7 @@
 
 t_point *ft_create_point(double x, double y, double z)
 {
-    t_point *point;
-
+    t_point *point;  
     point = (t_point*)malloc(sizeof(t_point));
     point->x = x;
     point->y = y;
@@ -50,8 +49,8 @@ t_pmtx *ft_create_pmtx(int size_x, int size_y)
     {
         pmtx->mtx[size_y] = (t_point**)malloc(sizeof(t_point*) * size_x);
     }
-    pmtx->angle = 0.0;
-    pmtx->scope = 0.0;
+    pmtx->angle = 0.5;
+    pmtx->scope = 2.0;
 
     return (pmtx);
 }
