@@ -30,7 +30,9 @@ int		control(int press_key, void *param)
 		f->scope -=5;
 		zoom_minus(pmtx);
 	}
-	if (press_key == 13 || press_key == 1 || press_key == 0 || press_key == 2 || press_key == 83 || press_key == 84 || press_key == 85)
+	if (press_key == 13 || press_key == 1 || press_key == 0 || press_key == 2 ||
+	 press_key == 83 || press_key == 84 || press_key == 85 || press_key == 86 ||
+		press_key == 87 || press_key == 88)
 		rotate(press_key, pmtx);
 	//modul_coordinates(pmtx);
 	//ft_print_pmtx(pmtx);
@@ -64,8 +66,8 @@ void	arrow(int press_key, t_pmtx *pmtx)
 				f->x -= 50;
 			else if (press_key == 124)
 				f->x += 50;
-			else if (press_key == 6)
-				f->z +=20;
+			//else if (press_key == 6)
+				//f->y +=20;
 			j++;
 		}
 		i++;
@@ -85,8 +87,8 @@ static void center_map(t_pmtx *pmtx)
 		j = 0;
 		while (j < pmtx->size_x)
 		{
-			pmtx->mtx[i][j]->x -= diff.x - 400;
-			pmtx->mtx[i][j]->y -= diff.y - 400;
+			pmtx->mtx[i][j]->x -= diff.x - 470;
+			pmtx->mtx[i][j]->y -= diff.y - 470;
 			j++;
 		}
 	i++;
@@ -98,7 +100,6 @@ void	rotate(int press_key, t_pmtx *pmtx)
 	int			i;
 	int			j;
 	t_point		*f;
-	t_point		diff;
 
 	i = 0;
 	while (i < pmtx->size_y) 
@@ -107,57 +108,53 @@ void	rotate(int press_key, t_pmtx *pmtx)
 		while (j < pmtx->size_x)
 		{
 			f = pmtx->mtx[i][j];
-			if (press_key == 2)//d right
-			{
-				double xx = f->x;
-				double yy = f->y;
-				f->x = (int)((xx + yy) * cos(pmtx->angle));
-				f->y = (int)((xx - yy) * sin(pmtx->angle) - f->z);
-			}
-			if (press_key == 13)//движение фигуры назад w
-			{
-				double xx = f->x;
-				double yy = f->y;
-				f->x = (int)((xx + yy) * -cos(pmtx->angle));
-				f->y = (int)((xx - yy) * sin(pmtx->angle) - f->z);
+			double xx = f->x;
+			double yy = f->y;
+			double zz = f->z;
+			
+			if (press_key == 13)//движение фигуры назад w // true
+			{	
+				f->x = (xx - yy) * cos(pmtx->angle);
+				f->y = (xx + yy) * sin(pmtx->angle) - f->z;
 			}
 			if (press_key == 1)// на себя s 
 			{
-				double xx = f->x;
-				double yy = f->y;
-				f->x = (int)((xx - yy) * cos(pmtx->angle));
-				f->y = (int)((xx + yy) * sin(pmtx->angle) - f->z);
+				f->y = yy * cos(f->angle) - zz * cos(pmtx->angle);
+				f->z = yy * sin(f->angle) + zz * cos(f->angle);
 			}
 			if (press_key == 0)//left a
 			{
-				double xx = f->x;
-				double yy = f->y;
-				f->x = (int)((xx - yy) * -cos(pmtx->angle));
-				f->y = (int)((xx + yy) * sin(pmtx->angle) - f->z);					
+				f->y = yy * cos(f->angle) + zz * sin(pmtx->angle);
+				//f->z = zz * cos(f->angle) - yy * sin(f->angle);					
 			}
 			if (press_key == 83)
 			{
-				double xx = f->x;
-				double yy = f->y;
-				f->x = (int)xx;
-				f->y = (int)(yy * cos(f->angle) + f->z * sin(pmtx->angle));
-				f->z = -(int)(yy * sin(f->angle) + f->z * cos(f->angle));
+				f->y = yy * cos(pmtx->angle) - zz * sin(pmtx->angle);
+				f->z = yy * sin(pmtx->angle) + zz * cos(pmtx->angle);
+			}
+			if (press_key == 86) //revers
+			{
+				f->y = yy * cos(pmtx->angle) + zz * sin(pmtx->angle);
+				f->z = zz * cos(pmtx->angle) - yy * sin(pmtx->angle);	
 			}
 			if (press_key == 84)
 			{
-				double xx = f->x;
-				double yy = f->y;
-				f->x = (int)(xx * cos(pmtx->angle) + f->z * sin(pmtx->angle));
-				f->y = (int)yy;
-				f->z = - (int)(xx * sin(pmtx->angle) + f->z * cos(pmtx->angle));
+				f->x = xx * cos(pmtx->angle) + zz * sin(pmtx->angle);
+				f->y = yy;
+				f->z = - xx * sin(pmtx->angle) + zz * cos(pmtx->angle);
 			}
+			if (press_key == 87)//revers
+			{
+				f->x = xx * cos(pmtx->angle) - zz * sin(pmtx->angle);
+				f->y = yy;
+				f->z = xx * sin(pmtx->angle) + zz * cos(pmtx->angle);
+			}
+
 			if (press_key == 85)
 			{
-				double xx = f->x;
-				double yy = f->y;
-				f->x = (int)(xx * cos(f->angle) - yy  * sin(f->angle));
-				f->y = (int)(xx * sin(f->angle) + yy * cos(f->angle));
-				f->z = - (int)f->x;	
+				f->x = xx * cos(pmtx->angle) - yy  * sin(pmtx->angle);
+				f->y = xx * sin(pmtx->angle) + yy * cos(pmtx->angle);
+				f->z = zz;	
 			}
 			j++;
 		}
