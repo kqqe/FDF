@@ -29,7 +29,7 @@ void	ft_graphics(int **mtx, int line_count, int len, t_pmtx *pmtx)//, int offset
 	//img->addr = mlx_get_data_addr(img->img, &img->bts, &img->size_line, &img->endian);
 
 	pmtx->img = img;
-	draw_map(line_count, len, pmtx, 0x0000ff00);
+	draw_map(line_count, len, pmtx, 16732240);
 
 	char *string = "FDF by Pben"; 
 	mlx_string_put (img->mlx_ptr, img->win_ptr, 1, 1, 0x0000ff00, string);
@@ -57,16 +57,26 @@ void	draw_map(int line_count, int len, t_pmtx *mtx, int color)
 			if (j < len - 1)
 			{	
 				linex = ft_create_line(mtx->mtx[i][j], mtx->mtx[i][j + 1]);
-				 ft_put_line(mtx->img->mlx_ptr, mtx->img->win_ptr, linex, color, mtx->img->addr);	
+					if (mtx->mtx[i][j]->x || mtx->mtx[i][j]->y)
+				 		mtx->color = 16732240;
+					else 
+						mtx->color = 0x0000ff00;
+				ft_put_line(mtx->img->mlx_ptr, mtx->img->win_ptr, linex, mtx->color, mtx->img->addr);	
 			}
 			if (i < line_count - 1)
 			{
 				liney = ft_create_line(mtx->mtx[i][j], mtx->mtx[i + 1][j]);
-				ft_put_line(mtx->img->mlx_ptr, mtx->img->win_ptr, liney, color, mtx->img->addr);		
+					if (mtx->mtx[i][j]->x || mtx->mtx[i][j]->y)
+				 		mtx->color = 16732240;
+					else 
+						mtx->color = 0x0000ff00;
+				ft_put_line(mtx->img->mlx_ptr, mtx->img->win_ptr, liney, mtx->color, mtx->img->addr);		
 			}		
 			//mlx_put_image_to_window(mtx->img->mlx_ptr, mtx->img->win_ptr, mtx->img->img, 50, 50);// c какого пикселя вставлять в окно
 			j++;	
 		}
 		i++;
+		
 	}
+	mtx->flag++;
 }

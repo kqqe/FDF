@@ -51,6 +51,7 @@ t_pmtx *ft_create_pmtx(int size_x, int size_y)
     }
     pmtx->angle = 0.5;
     pmtx->scope = 2.0;
-
+    pmtx->color = 0x0000ff00;
+    pmtx->flag = 0;
     return (pmtx);
 }
