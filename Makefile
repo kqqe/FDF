@@ -12,7 +12,7 @@
 
 NAME=fdf
 
-CFLAGS=#-Wall -Wextra -Werror
+CFLAGS=#-Wall -Wextra -Werror -fsanitize=address
 FFLAGS= -framework OpenGL -framework AppKit
 
 SRC_PATH=./src
@@ -21,10 +21,12 @@ MLX_PATH=/Users/pben/Desktop/sawal/minilibx_macos
 #MLX_PATH=/usr/local/lib
 MLX_INC_PATH=/usr/local/include
 FT_PATH=./libft
+
+
 BIN_PATH=./bin
 
 SRC= fdf.c create_functions.c ft_put_line.c ft_read_mtx.c ft_graphics.c \
-	ft_error_output.c
+	ft_error_output.c coordinates.c init_functions.c
 OBJ:= $(addprefix $(BIN_PATH)/,$(SRC:.c=.o))
 
 .PHONY: all clean fclean re
@@ -37,7 +39,7 @@ $(BIN_PATH):
 $(NAME): $(OBJ) $(INC_PATH)/fdf.h
 	@make -s -C $(FT_PATH)
 #	gcc -o $@ $(OBJ) -L$(FT_PATH) -lft -I$(FT_PATH) $(FFLAGS)
-	gcc -o $@ $(OBJ) -L$(MLX_PATH) -lmlx -I$(MLX_INC_PATH) -L$(FT_PATH) -lft -I$(FT_PATH) $(FFLAGS)
+	gcc -g -o $@ $(OBJ) -L$(MLX_PATH) -lmlx -I$(MLX_INC_PATH) -L$(FT_PATH) -lft -I$(FT_PATH) $(FFLAGS)
 
 $(BIN_PATH)/%.o: $(SRC_PATH)/%.c
 	gcc -g $(CFLAGS) -o $@ -c $< -I$(INC_PATH) -I$(FT_PATH)
