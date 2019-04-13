@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffahey <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/04 14:15:27 by ffahey            #+#    #+#             */
-/*   Updated: 2019/03/04 14:30:42 by ffahey           ###   ########.fr       */
+/*   Created: 2019/03/04 14:15:27 by pben	           #+#    #+#             */
+/*   Updated: 2019/03/04 14:30:42 by pben             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@ static void	line_by_x(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 	double		y;
 	double		d;
 	int			len;
-	int			*addr;
-	int 		size_window_picture = WINDOW;
 
-	len = (MAX(line.len_x, line.len_y) + 1);//dda algoritm
+	len = (MAX(line.len_x, line.len_y) + 1);
 	x = line.p0.x;
 	y = line.p0.y;
 	d = -line.len_x;
@@ -35,9 +33,6 @@ static void	line_by_x(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 			d -= 2 * line.len_x;
 			y += line.dy;
 		}
-		
-		 //addr = (int*)s;
-		 //addr[((int)(x + (y * size_window_picture))) - 1] = colour;
 	}
 
 }
@@ -48,8 +43,6 @@ static void	line_by_y(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 	double		y;
 	double		d;
 	int			len;
-	int		*addr;
-	int 	size_window_picture = WINDOW;
 
 	len = (MAX(line.len_x, line.len_y) + 1);
 	x = line.p0.x;
@@ -65,16 +58,13 @@ static void	line_by_y(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 			d -= 2 * line.len_y;
 			x += line.dx;
 		}
-		
-		 //addr = (int*)s;
-		 //addr[((int)(x + (y * size_window_picture))) - 1] = colour;// приводить к int онли тут 
 	}
 }
 
-void		ft_put_line(void *mlx_ptr, void *win_ptr, t_line line, int colour, char *s)
+void		ft_put_line(t_pmtx *mtx, t_line line, int cx, int cy)
 {
 	if (line.len_y <= line.len_x)
-		line_by_x(mlx_ptr, win_ptr, line, colour, s);
+		line_by_x(mtx->img->mlx_ptr, mtx->img->win_ptr, line, mtx->clr[cx][cy], mtx->img->addr);
 	else
-		line_by_y(mlx_ptr, win_ptr, line, colour, s);
+		line_by_y(mtx->img->mlx_ptr, mtx->img->win_ptr, line, mtx->clr1[cx][cy], mtx->img->addr);
 }

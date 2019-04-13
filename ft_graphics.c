@@ -27,7 +27,7 @@ int		**ft_initclr(int line, int len, int **clr)
 	return (clr);
 }
 
-void	ft_graphics(int **mtx,t_pmtx *pmtx)//, int offset)
+void	ft_graphics(int **mtx,t_pmtx *pmtx)
 {
 
 	t_img		*img;
@@ -42,6 +42,7 @@ void	ft_graphics(int **mtx,t_pmtx *pmtx)//, int offset)
 	pmtx->img = img;
 	color = malloc(sizeof(t_clr));
 	pmtx->clr = ft_initclr(pmtx->size_y, pmtx->size_x, pmtx->clr);
+	pmtx->clr1 = ft_initclr(pmtx->size_y, pmtx->size_x, pmtx->clr1);
 	draw_map(pmtx, 16732240);
 	mlx_hook(img->win_ptr, 17, 0, close_window, (void*)0);	
 	mlx_hook(img->win_ptr, 2, 0, control, (void*)(pmtx));
@@ -50,6 +51,16 @@ void	ft_graphics(int **mtx,t_pmtx *pmtx)//, int offset)
 	free(pmtx->mtx);
 }
 
+int		colorete(int z)
+{
+	int i;
+	int j;
+	double color;
+
+	i = z;
+	color = 65280 + (i * 50);
+	return (color);
+}
 void	draw_map(t_pmtx *mtx, int color)
 { 
 	int 		i;
@@ -73,40 +84,62 @@ void	draw_map(t_pmtx *mtx, int color)
 			}		
 			j++;	
 		}
-		i++;
-	menu(mtx);
+		i++;	
 	}
+	ft_print_pmtx(mtx);
+	//menu(mtx);
 	mtx->flag = 1; 
 }
 
 void line_x(int i, int j, t_pmtx *mtx, t_line linex)
 {
 	linex = ft_create_line(mtx->mtx[i][j], mtx->mtx[i][j + 1]);
-	if ((mtx->mtx[i][j]->z > 50 && mtx->flag == 0) || (mtx->clr[i][j] == 1))
+	if (mtx->flag == 0)
 	{
-		mtx->color = 16732240;
-		mtx->clr[i][j] = 1;
+		mtx->clr[i][j] = colorete(mtx->mtx[i][j]->z);
 	}
-	else 
-		mtx->color = 0x0000ff00;
-	ft_put_line(mtx->img->mlx_ptr, mtx->img->win_ptr, linex, mtx->color, mtx->img->addr);	
+	if (mtx->flag == 0 && (mtx->mtx[i][j]->z < mtx->mtx[i][j + 1]->z))
+	{
+		mtx->clr[i][j] = colorete(mtx->mtx[i][j + 1]->z);
+	}
+	mtx->color = mtx->clr[i][j];
+	ft_put_line(mtx, linex, i, j);	
 }
 
 void line_y(int i, int j, t_pmtx *mtx, t_line liney)
-{
+{	
 	liney = ft_create_line(mtx->mtx[i][j], mtx->mtx[i + 1][j]);
-	if ((mtx->mtx[i][j]->z > 50 && mtx->flag == 0) || (mtx->clr[i][j] == 1))
+	if (mtx->flag == 0)
 	{
-		mtx->color = 16732240;
-		mtx->clr[i][j] = 1;
+		mtx->clr1[i][j] = colorete(mtx->mtx[i][j]->z);
 	}
-	else 
-		mtx->color = 0x0000ff00;
-	ft_put_line(mtx->img->mlx_ptr, mtx->img->win_ptr, liney, mtx->color, mtx->img->addr);		
+	if (mtx->flag == 0 && (mtx->mtx[i][j]->z < mtx->mtx[i + 1][j]->z))
+	{
+		mtx->clr1[i][j] = colorete(mtx->mtx[i + 1][j]->z);
+	}
+	mtx->color = mtx->clr1[i][j];
+	ft_put_line(mtx, liney, i, j);	
 }
 
 void	menu(t_pmtx *mtx)
 {
-	char *string = "FDF by Pben"; 
-	mlx_string_put (mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 1, 0x0000ff00, string);
+	char	*string1;
+	char	*string2;
+	char	*string3;
+	char	*string4;
+	char	*string5;
+	
+	string1 = "FDF by Pben and Adoyle";
+	string2 = "Rotate button 1 - 3";
+	string3 = "Zooom plus or minus";
+	string3 = "125 ballov ili uebem";
+	string4 = "Move button <- or -> or v or ^";
+	string5 = "Color button 7 or 8 or 9";
+	
+	mlx_string_put (mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 1, 0x00FF9632, string1);
+	mlx_string_put (mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 25, 0x00FF9632, string2);
+	mlx_string_put (mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 50, 0x00FF9632, string3);
+	mlx_string_put (mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 75, 0x00FF9632, string4);
+	mlx_string_put (mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 100, 0x00FF9632, string5);
+
 }

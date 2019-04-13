@@ -12,16 +12,13 @@
 
 #include "fdf.h"
 
-int		**ft_read_mtx(char *filename)
+static int get_size_y(char *filename, int ***mtx)
 {
-	int		fd;
-	char	buf;
-	int		line_count;
-	int		ret;
-	int		**mtx;
-	char	*line;
-	int		len;
-	
+	int fd;
+	int ret;
+	int line_count;
+	char buf;
+
 	fd = open(filename, O_RDONLY);
 	line_count = 0;
 
@@ -32,39 +29,68 @@ int		**ft_read_mtx(char *filename)
 			line_count++;
 	}
 	//Выделяем память под строки
-	mtx = (int**)malloc(line_count * sizeof(int*));
+	*mtx = (int**)malloc(line_count * sizeof(int*));
 	close(fd);
-	fd = open(filename, O_RDONLY);
-	int i = 0; //Счетчик для строк
+
+	return (line_count);
+}
+
+static void ft_read_rows(int fd, int *len, int ***mtx)
+{
+	int i;
+	int j;
+	int ret;
+	char *line;
+	char **tmp;
+
+	i = 0;
 	while((ret = get_next_line(fd, &line)) == 1)
 	{
-		char **tmp = ft_strsplit(line, ' '); //Дробим строку по пробелам
-		int j;
+		tmp = ft_strsplit(line, ' '); //Дробим строку по пробелам
 		//Считаем количество чисел в строке
-		len = 0;
-		while(tmp[len])
-			len++;
-		mtx[i] = (int*)malloc(len * sizeof(int)); //выделяем память под i-ую строку
+		*len = 0;
+		while(tmp[*len])
+			(*len)++;
+		(*mtx)[i] = (int*)malloc(*len * sizeof(int)); //выделяем память под i-ую строку
 		//заполняем строку числами
 		j = 0;
-		while (j < len)
+		while (j < *len)
 		{
-			mtx[i][j] = ft_atoi(tmp[j]);// написать атои базе
+			(*mtx)[i][j] = ft_atoi(tmp[j]);// написать атои базе
 			j++;
 		}
 		i++;
 		ft_free_tab(&tmp);
 		free(line);
 	}
-	t_pmtx *pmtx = ft_init_pmtx(mtx, len, line_count);
-	//ft_print_pmtx(pmtx);
-	ft_graphics(mtx, line_count, len, pmtx);
-	// for(i = 0; i < line_count; i++)
-	// {
-	// 	for(int j = 0; j < len; j++)
-	// 		printf("%3d", mtx[i][j]);
-	// 	printf("\n");
-	// }
+}
+
+static int get_size_x(char *filename, int ***mtx)
+{
+	int size_x;
+	int fd;
+	int ret;
+	char *line;
+
+	fd = open(filename, O_RDONLY);
+	ft_read_rows(fd, &size_x, mtx);
+
 	close(fd);
+	return size_x;
+}
+
+int		**ft_read_mtx(char *filename)
+{
+	int		**mtx;
+	t_pmtx	*pmtx;
+	int size_x;
+	int size_y;
+	
+	size_y = get_size_y(filename, &mtx);
+	size_x = get_size_x(filename, &mtx);
+	pmtx = ft_init_pmtx(mtx, size_x, size_y);
+	ft_graphics(mtx, pmtx);
 	return (mtx);
 }
+
+
