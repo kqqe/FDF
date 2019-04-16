@@ -20,7 +20,7 @@ t_pmtx    *ft_init_pmtx(int **mtx, int size_x, int size_y)
     t_point ***dest;
     int offset;
 
-    offset = 0;
+    offset = 325;
     pmtx = ft_create_pmtx(size_x, size_y);
     dest = pmtx->mtx;
     i = 0;
@@ -29,7 +29,7 @@ t_pmtx    *ft_init_pmtx(int **mtx, int size_x, int size_y)
         j = 0;
         while (j < pmtx->size_x)
         {
-            dest[i][j] = ft_create_point(((j + 1) * 40) + offset, ((i + 1) * 40) + offset, (mtx[i][j] * 4) + offset);
+            dest[i][j] = ft_create_point(((j + 1) * 15) + offset, ((i + 1) * 15) + offset, (mtx[i][j] * 10) + offset);
             j++;
         }
         i++;

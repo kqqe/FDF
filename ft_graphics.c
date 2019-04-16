@@ -54,11 +54,17 @@ void	ft_graphics(int **mtx,t_pmtx *pmtx)
 int		colorete(int z)
 {
 	int i;
-	int j;
-	double color;
-
-	i = z;
-	color = 65280 + (i * 50);
+	static int j;
+	int		 color;
+	 
+	i = 1;
+	//if (z > j)
+	//	i *= 10000;
+	j = z;
+	if (z == 325)
+		color = 65280;
+	else 
+		color = 0x0008080;// + (i * 50); //0x0008080
 	return (color);
 }
 void	draw_map(t_pmtx *mtx, int color)
@@ -74,9 +80,19 @@ void	draw_map(t_pmtx *mtx, int color)
 		j = 0;
 		while (j < mtx->size_x)
 		{
+			if (j < mtx->size_x && mtx->flag == 0)
+			{
+				mtx->clr[i][j] = colorete(mtx->mtx[i][j]->z);
+				mtx->color = mtx->clr[i][j];
+			}
 			if (j < mtx->size_x - 1)
 			{	
 				line_x(i, j, mtx, linex);
+			}
+			if (i < mtx->size_y && mtx->flag == 0)
+			{
+				mtx->clr1[i][j] = colorete(mtx->mtx[i][j]->z);
+				mtx->color = mtx->clr1[i][j];
 			}
 			if (i < mtx->size_y - 1)
 			{
@@ -86,8 +102,8 @@ void	draw_map(t_pmtx *mtx, int color)
 		}
 		i++;	
 	}
-	ft_print_pmtx(mtx);
-	//menu(mtx);
+	//ft_print_pmtx(mtx);
+	menu(mtx);
 	mtx->flag = 1; 
 }
 
@@ -102,7 +118,7 @@ void line_x(int i, int j, t_pmtx *mtx, t_line linex)
 	{
 		mtx->clr[i][j] = colorete(mtx->mtx[i][j + 1]->z);
 	}
-	mtx->color = mtx->clr[i][j];
+		mtx->color = mtx->clr[i][j];
 	ft_put_line(mtx, linex, i, j);	
 }
 
@@ -117,8 +133,26 @@ void line_y(int i, int j, t_pmtx *mtx, t_line liney)
 	{
 		mtx->clr1[i][j] = colorete(mtx->mtx[i + 1][j]->z);
 	}
-	mtx->color = mtx->clr1[i][j];
+		mtx->color = mtx->clr1[i][j];
+	//print_clr(mtx);
 	ft_put_line(mtx, liney, i, j);	
+}
+
+void print_clr(t_pmtx *s)
+{
+	int i;
+	i = 0;
+	while ( i < s->size_y)
+	{	
+		int j = 0;
+		while(j < s->size_x)
+		{
+			printf(" color = %i,(i%i, j%i)",  s->clr1[i][j], i, j);
+			j++;
+		}
+		i++;
+	}
+	printf("\n");
 }
 
 void	menu(t_pmtx *mtx)

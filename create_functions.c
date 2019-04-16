@@ -18,7 +18,8 @@ t_point *ft_create_point(double x, double y, double z)
     point = (t_point*)malloc(sizeof(t_point));
     point->x = x;
     point->y = y;
-    point->z = z; 
+    point->z = z;
+    point->color = 0;
     return (point);
 }
 
