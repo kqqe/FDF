@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_graphics.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pben	<marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: pben <pben@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/04 14:39:35 by pben              #+#    #+#             */
-/*   Updated: 2019/03/04 14:58:17 by pben             ###   ########.fr       */
+/*   Created: 2019/04/17 17:38:20 by pben              #+#    #+#             */
+/*   Updated: 2019/04/17 18:02:03 by pben             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,46 +27,46 @@ int		**ft_initclr(int line, int len, int **clr)
 	return (clr);
 }
 
-void	ft_graphics(int **mtx,t_pmtx *pmtx)
+void	ft_graphics(int **mtx, t_pmtx *pmtx)
 {
 
-	t_img		*img;
-	int			*addr;
-	t_clr		*color;
-	int			offset = 85;
-	
+	t_img	*img;
+	int		*addr;
+	t_clr	*color;
+
 	if ((img = malloc(sizeof(t_img))) == NULL)
 		exit(0);
-	img->mlx_ptr = mlx_init();	
-	img->win_ptr = mlx_new_window(img->mlx_ptr, 1000, 1000, "fdF"); 
+	img->mlx_ptr = mlx_init();
+	img->win_ptr = mlx_new_window(img->mlx_ptr, 1000, 1000, "fdF");
 	pmtx->img = img;
 	color = malloc(sizeof(t_clr));
 	pmtx->clr = ft_initclr(pmtx->size_y, pmtx->size_x, pmtx->clr);
 	pmtx->clr1 = ft_initclr(pmtx->size_y, pmtx->size_x, pmtx->clr1);
 	draw_map(pmtx, 16732240);
-	mlx_hook(img->win_ptr, 17, 0, close_window, (void*)0);	
+	mlx_hook(img->win_ptr, 17, 0, close_window, (void*)0);
 	mlx_hook(img->win_ptr, 2, 0, control, (void*)(pmtx));
-	mlx_loop(img->mlx_ptr);	
+	mlx_loop(img->mlx_ptr);
 	free(img);
 	free(pmtx->mtx);
 }
 
 int		colorete(int z)
 {
-	int i;
-	static int j;
-	int		 color;
-	 
+	int			i;
+	static int	j;
+	int			color;
+
 	i = 1;
 	if (z > j)
 		i *= 100;
 	j = z;
 	if (z == 325)
-		color = 65280;// * i;
-	else 
+		color = 65280;
+	else
 		color = 0x0008080 * i;
 	return (color);
 }
+
 void	draw_map(t_pmtx *mtx, int color)
 { 
 	int 		i;
@@ -102,7 +102,6 @@ void	draw_map(t_pmtx *mtx, int color)
 		}
 		i++;	
 	}
-	//ft_print_pmtx(mtx);
 	menu(mtx);
 	mtx->flag = 1; 
 }
@@ -118,7 +117,7 @@ void line_x(int i, int j, t_pmtx *mtx, t_line linex)
 	{
 		mtx->clr[i][j] = colorete(mtx->mtx[i][j + 1]->z);
 	}
-		mtx->color = mtx->clr[i][j];
+	mtx->color = mtx->clr[i][j];
 	ft_put_line(mtx, linex, i, j);	
 }
 
@@ -133,47 +132,28 @@ void line_y(int i, int j, t_pmtx *mtx, t_line liney)
 	{
 		mtx->clr1[i][j] = colorete(mtx->mtx[i + 1][j]->z);
 	}
-		mtx->color = mtx->clr1[i][j];
-	//print_clr(mtx);
+	mtx->color = mtx->clr1[i][j];
 	ft_put_line(mtx, liney, i, j);	
-}
-
-void print_clr(t_pmtx *s)
-{
-	int i;
-	i = 0;
-	while ( i < s->size_y)
-	{	
-		int j = 0;
-		while(j < s->size_x)
-		{
-			printf(" color = %i,(i%i, j%i)",  s->clr1[i][j], i, j);
-			j++;
-		}
-		i++;
-	}
-	printf("\n");
 }
 
 void	menu(t_pmtx *mtx)
 {
-	char	*string1;
-	char	*string2;
-	char	*string3;
-	char	*string4;
-	char	*string5;
+	char	*s1;
+	char	*s2;
+	char	*s3;
+	char	*s4;
+	char	*s5;
 	
-	string1 = "FDF by Pben and Adoyle";
-	string2 = "Rotate button 1 - 3";
-	string3 = "Zooom plus or minus";
-	string3 = "125 ballov ili uebem";
-	string4 = "Move button <- or -> or v or ^";
-	string5 = "Color button 7 or 8 or 9";
+	s1 = "FDF by Pben and Adoyle";
+	s2 = "Rotate button 1 - 3";
+	s3 = "Zooom plus or minus";
+	s4 = "Move button <- or -> or v or ^";
+	s5 = "Color button 7 or 8 or 9 not job";
 	
-	mlx_string_put (mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 1, 0x00FF9632, string1);
-	mlx_string_put (mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 25, 0x00FF9632, string2);
-	mlx_string_put (mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 50, 0x00FF9632, string3);
-	mlx_string_put (mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 75, 0x00FF9632, string4);
-	mlx_string_put (mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 100, 0x00FF9632, string5);
-
+	mlx_string_put(mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 1, 0x00FF9632, s1);
+	mlx_string_put(mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 25, 0x00FF9632, s2);
+	mlx_string_put(mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 50, 0x00FF9632, s3);
+	mlx_string_put(mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 75, 0x00FF9632, s4);
+	mlx_string_put(mtx->img->mlx_ptr,
+	 mtx->img->win_ptr, 1, 100, 0x00FF9632, s5);
 }

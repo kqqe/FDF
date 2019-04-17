@@ -25,7 +25,7 @@ static void	line_by_x(void *mlx_ptr, void *win_ptr, t_line line, int colour, cha
 	d = -line.len_x;
 	while (len--)
 	{
-		// mlx_pixel_put(mlx_ptr, win_ptr, x, y, colour);
+		mlx_pixel_put(mlx_ptr, win_ptr, x, y, colour);
 		x += line.dx;
 		d += 2 * line.len_y;
 		if (d > 0)
