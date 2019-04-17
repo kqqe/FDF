@@ -1,11 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validation.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pben <pben@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/17 17:13:11 by pben              #+#    #+#             */
+/*   Updated: 2019/04/17 17:15:52 by pben             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fdf.h"
 
-int		check_len(char *str, int k)
+int     check_len(char *str, int k)
 {
-	int i;
-	int count;
-
+	int		i;
+	int		count;
+	
 	i = 0;
 	count = 0;
 	while (i <= k)
@@ -19,7 +30,7 @@ int		check_len(char *str, int k)
 
 int		check_simbol(char *str, int k)
 {
-	int i;
+	int		i;
 
 	i = k - 1;
 	while (i > 0)
@@ -103,7 +114,7 @@ int		check_int(char *str)
 		}
 		if (str[i] == ' ' &&  str[i + 1] == '-' && (str[i + 2] > 47 && str[i + 2] < 58))
 		{
-			if (str[i + 3] && (str[i + 3] > 47 && str[i + 3] < 58) && ft_atoi(str + i + 2) > 0)
+			if (str[i + 3] && (str[i + 3] > 47 && str[i + 3] < 58) && (ft_atoi(str + i + 1) >= 0))
 				return (1);
 		}
 		i++;

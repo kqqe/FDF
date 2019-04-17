@@ -3,9 +3,10 @@
 
 int		pixelslen(char *av, int x)
 {
-	int i;
-	int fd;
-	int xx;
+	int		i;
+	int		fd;
+	int		xx;
+	int		 
 
 	fd = open(av, O_RDONLY);
 	f = get_next_line(fd, &line);

@@ -29,7 +29,7 @@ t_pmtx    *ft_init_pmtx(int **mtx, int size_x, int size_y)
         j = 0;
         while (j < pmtx->size_x)
         {
-            dest[i][j] = ft_create_point(((j + 1) * 15) + offset, ((i + 1) * 15) + offset, (mtx[i][j] * 10) + offset);
+            dest[i][j] = ft_create_point(((j + 1) * 15) + offset, ((i + 1) * 15) + offset, (mtx[i][j] * 5) + offset);
             j++;
         }
         i++;
@@ -44,39 +44,44 @@ void    zoom_plus(t_pmtx *pmtx)
     int j;
 
     i = 0;
+    if (i == 0 && j == 0)
+        diff = *(pmtx->mtx[0][0]);
     while (i < pmtx->size_y)
     {
         j = 0;
         while (j < pmtx->size_x)
         {
             pmtx->mtx[i][j]->x *= pmtx->scope;
+            pmtx->mtx[i][j]->x -= diff.x;
             pmtx->mtx[i][j]->y *= pmtx->scope;
+            pmtx->mtx[i][j]->y -= diff.y;
             j++;
         }
         i++;
     }
-    center_map(pmtx);
 }
 void    zoom_minus(t_pmtx *pmtx)
 {
     t_point diff;
     int i;
     int j;
-    
+
     i = 0;
+    if (i == 0 && j == 0)
+        diff = *(pmtx->mtx[0][0]);
     while (i < pmtx->size_y)
     {
         j = 0;
         while (j < pmtx->size_x)
         {
+            pmtx->mtx[i][j]->x += diff.x;
             pmtx->mtx[i][j]->x /= pmtx->scope;
+            pmtx->mtx[i][j]->y += diff.y;
             pmtx->mtx[i][j]->y /= pmtx->scope;
-          
            j++;
         }
         i++;
     }
-    center_map(pmtx);
 }
 
 void    ft_print_pmtx(t_pmtx *pmtx)

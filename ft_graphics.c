@@ -58,13 +58,13 @@ int		colorete(int z)
 	int		 color;
 	 
 	i = 1;
-	//if (z > j)
-	//	i *= 10000;
+	if (z > j)
+		i *= 100;
 	j = z;
 	if (z == 325)
-		color = 65280;
+		color = 65280;// * i;
 	else 
-		color = 0x0008080;// + (i * 50); //0x0008080
+		color = 0x0008080 * i;
 	return (color);
 }
 void	draw_map(t_pmtx *mtx, int color)
