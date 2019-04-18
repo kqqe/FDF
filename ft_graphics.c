@@ -6,7 +6,7 @@
 /*   By: pben <pben@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 17:38:20 by pben              #+#    #+#             */
-/*   Updated: 2019/04/17 18:02:03 by pben             ###   ########.fr       */
+/*   Updated: 2019/04/18 19:53:29 by pben             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int		**ft_initclr(int line, int len, int **clr)
 
 void	ft_graphics(int **mtx, t_pmtx *pmtx)
 {
-
 	t_img	*img;
 	int		*addr;
 	t_clr	*color;
@@ -52,23 +51,31 @@ void	ft_graphics(int **mtx, t_pmtx *pmtx)
 
 int		colorete(int z)
 {
-	int			i;
-	static int	j;
 	int			color;
 
-	i = 1;
-	if (z > j)
-		i *= 100;
-	j = z;
 	if (z == 325)
 		color = 65280;
+	else if (z < 0)
+		color = 0x0008080 + (z * 3 * (-1));
 	else
-		color = 0x0008080 * i;
+		color = 0x0008080 + (z * 3);
 	return (color);
 }
 
+void	draws(t_pmtx *mtx, int i, int j)
+{
+	mtx->clr[i][j] = colorete(mtx->mtx[i][j]->z);
+	mtx->color = mtx->clr[i][j];
+}
+
+void	draws1(t_pmtx *mtx, int i, int j)
+{
+	mtx->clr1[i][j] = colorete(mtx->mtx[i][j]->z);
+	mtx->color = mtx->clr1[i][j];
+}
+
 void	draw_map(t_pmtx *mtx, int color)
-{ 
+{
 	int 		i;
 	int			j;
 	t_line		linex;
@@ -81,23 +88,13 @@ void	draw_map(t_pmtx *mtx, int color)
 		while (j < mtx->size_x)
 		{
 			if (j < mtx->size_x && mtx->flag == 0)
-			{
-				mtx->clr[i][j] = colorete(mtx->mtx[i][j]->z);
-				mtx->color = mtx->clr[i][j];
-			}
+				draws(mtx, i, j);
 			if (j < mtx->size_x - 1)
-			{	
 				line_x(i, j, mtx, linex);
-			}
 			if (i < mtx->size_y && mtx->flag == 0)
-			{
-				mtx->clr1[i][j] = colorete(mtx->mtx[i][j]->z);
-				mtx->color = mtx->clr1[i][j];
-			}
+				draws1(mtx, i, j);
 			if (i < mtx->size_y - 1)
-			{
-				line_y(i, j, mtx, liney);
-			}		
+				line_y(i, j, mtx, liney);	
 			j++;	
 		}
 		i++;	
@@ -147,8 +144,9 @@ void	menu(t_pmtx *mtx)
 	s1 = "FDF by Pben and Adoyle";
 	s2 = "Rotate button 1 - 3";
 	s3 = "Zooom plus or minus";
+	s3 = "(.).!.(.)";
 	s4 = "Move button <- or -> or v or ^";
-	s5 = "Color button 7 or 8 or 9 not job";
+	s5 = "BUtton I or P or O and TAB";
 	
 	mlx_string_put(mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 1, 0x00FF9632, s1);
 	mlx_string_put(mtx->img->mlx_ptr, mtx->img->win_ptr, 1, 25, 0x00FF9632, s2);
