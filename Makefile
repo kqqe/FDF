@@ -3,22 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ffahey <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: pben <pben@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/03/03 14:19:44 by ffahey            #+#    #+#              #
-#    Updated: 2019/03/04 15:01:01 by ffahey           ###   ########.fr        #
+#    Created: 2019/04/18 20:38:00 by pben              #+#    #+#              #
+#    Updated: 2019/04/18 20:47:16 by pben             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=fdf
 
-CFLAGS=#-Wall -Wextra -Werror -fsanitize=address
+CFLAGS=-Wall -Wextra -Werror
 FFLAGS= -framework OpenGL -framework AppKit
 
 SRC_PATH=./src
 INC_PATH=./include
-MLX_PATH=/Users/pben/Desktop/sawal/minilibx_macos
-#MLX_PATH=/usr/local/lib
+MLX_PATH=./minilibx_macos
+MLX_PATH=/usr/local/lib
 MLX_INC_PATH=/usr/local/include
 FT_PATH=./libft
 
@@ -26,7 +26,8 @@ FT_PATH=./libft
 BIN_PATH=./bin
 
 SRC= fdf.c create_functions.c ft_put_line.c ft_read_mtx.c ft_graphics.c \
-	ft_error_output.c coordinates.c init_functions.c
+	ft_error_output.c coordinates.c init_functions.c validation.c valchecks.c coordinates2.c\
+	ft_graphiss.c
 OBJ:= $(addprefix $(BIN_PATH)/,$(SRC:.c=.o))
 
 .PHONY: all clean fclean re
@@ -38,7 +39,6 @@ $(BIN_PATH):
 
 $(NAME): $(OBJ) $(INC_PATH)/fdf.h
 	@make -s -C $(FT_PATH)
-#	gcc -o $@ $(OBJ) -L$(FT_PATH) -lft -I$(FT_PATH) $(FFLAGS)
 	gcc -g -o $@ $(OBJ) -L$(MLX_PATH) -lmlx -I$(MLX_INC_PATH) -L$(FT_PATH) -lft -I$(FT_PATH) $(FFLAGS)
 
 $(BIN_PATH)/%.o: $(SRC_PATH)/%.c
